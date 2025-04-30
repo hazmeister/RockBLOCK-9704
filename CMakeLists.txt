@@ -98,6 +98,7 @@ if (BUILD_PYTHON_SHARED_LIBRARY STREQUAL "ON")
         ${SRC_DIR}/serial_presets/serial_arduino/serial_arduino.cpp
         ${PYTHON_SRC_DIR}/rockblock.c
     )
+    target_compile_definitions(${PYTHON_SHARED_LIB} PRIVATE PY_SSIZE_T_CLEAN)
     target_include_directories(${PYTHON_SHARED_LIB} PRIVATE ${Python3_INCLUDE_DIRS} ${IRIDIUM_IMT_LIB})
     target_link_libraries(${PYTHON_SHARED_LIB} PRIVATE ${Python3_LIBRARIES} ${IRIDIUM_IMT_LIB})
     if(APPLE)
