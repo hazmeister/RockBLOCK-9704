@@ -4,7 +4,7 @@
 
 static PyObject *py_getSignal(PyObject *self, PyObject *args) {
 
-    int result = getSignal();
+    Py_ssize_t result = getSignal();
 
     return Py_BuildValue("i", result);
 
@@ -12,7 +12,7 @@ static PyObject *py_getSignal(PyObject *self, PyObject *args) {
 
 static PyObject *py_rbBegin(PyObject *self, PyObject *args) {
 
-    int result;
+    Py_ssize_t result;
     char * port;
 
     if (!PyArg_ParseTuple(args, "s", &port)) {
@@ -29,7 +29,7 @@ static PyObject *py_rbBegin(PyObject *self, PyObject *args) {
 
 static PyObject *py_rbEnd(PyObject *self, PyObject *args) {
 
-    int result;
+    Py_ssize_t result;
 
     result = rbEnd();
 
@@ -39,7 +39,7 @@ static PyObject *py_rbEnd(PyObject *self, PyObject *args) {
 #ifdef RB_GPIO
 static PyObject *py_rbBeginGpio(PyObject *self, PyObject *args) {
 
-    int result;
+    Py_ssize_t result;
     char * port;
     PyObject *gpioDict;
     int timeout;
@@ -98,7 +98,7 @@ static PyObject *py_rbBeginGpio(PyObject *self, PyObject *args) {
 static PyObject *py_rbEndGpio(PyObject *self, PyObject *args) {
 
 
-    int result;
+    Py_ssize_t result;
     PyObject *gpioDict;
 
     if (!PyArg_ParseTuple(args, "O", &gpioDict)) {
@@ -154,7 +154,7 @@ static PyObject *py_rbEndGpio(PyObject *self, PyObject *args) {
 #endif
 static PyObject *py_sendMessage(PyObject *self, PyObject *args) {
 
-    int result;
+    Py_ssize_t result;
     char * data;
     Py_ssize_t length;
     int timeout;
@@ -173,10 +173,11 @@ static PyObject *py_sendMessage(PyObject *self, PyObject *args) {
 
 static PyObject *py_sendMessageAny(PyObject *self, PyObject *args) {
 
-    int result, topic;
+    Py_ssize_t result
+    int topic, timeout;
     char * data;
     Py_ssize_t length;
-    int timeout;
+    
 
     if (!PyArg_ParseTuple(args, "is#i", &topic, &data, &length, &timeout)) {
 
@@ -220,7 +221,7 @@ static PyObject *py_receiveMessageWithTopic(PyObject *self, PyObject *args) {
 
     char* mtBuffer;
 
-    const size_t mtLength = receiveMessageWithTopic(&mtBuffer, topic);
+    const Py_ssize_t mtLength = receiveMessageWithTopic(&mtBuffer, topic);
 
     if ((mtLength > 0) && (mtBuffer != NULL)) {
 
@@ -257,21 +258,21 @@ static PyObject *py_getImei(PyObject *self, PyObject *args) {
 
 static PyObject *py_getBoardTemp(PyObject *self, PyObject *args) {
 
-    int result = getBoardTemp();
+    Py_ssize_t result = getBoardTemp();
     return Py_BuildValue("i", result);
 
 }
 
 static PyObject *py_getCardPresent(PyObject *self, PyObject *args) {
 
-  int result = getCardPresent();
+  Py_ssize_t result = getCardPresent();
   return Py_BuildValue("i", result);
 
 }
 
 static PyObject *py_getSimConnected(PyObject *self, PyObject *args) {
 
-  int result = getSimConnected();
+  Py_ssize_t result = getSimConnected();
   return Py_BuildValue("i", result);
 
 }
