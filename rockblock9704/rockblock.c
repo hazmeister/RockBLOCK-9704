@@ -1,10 +1,12 @@
-#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "rockblock_9704.h"
 
+PyAPI_FUNC(int)
+_PyArg_ParseTuple_SizeT(PyObject *args, const char *format, ...);
+
 static PyObject *py_getSignal(PyObject *self, PyObject *args) {
 
-    Py_ssize_t result = getSignal();
+    int result = getSignal();
 
     return Py_BuildValue("i", result);
 
@@ -12,10 +14,10 @@ static PyObject *py_getSignal(PyObject *self, PyObject *args) {
 
 static PyObject *py_rbBegin(PyObject *self, PyObject *args) {
 
-    Py_ssize_t result;
+    int result;
     char * port;
 
-    if (!PyArg_ParseTuple(args, "s", &port)) {
+    if (!_PyArg_ParseTuple_SizeT(args, "s", &port)) {
 
         return NULL;
 
@@ -29,7 +31,7 @@ static PyObject *py_rbBegin(PyObject *self, PyObject *args) {
 
 static PyObject *py_rbEnd(PyObject *self, PyObject *args) {
 
-    Py_ssize_t result;
+    int result;
 
     result = rbEnd();
 
@@ -39,12 +41,12 @@ static PyObject *py_rbEnd(PyObject *self, PyObject *args) {
 #ifdef RB_GPIO
 static PyObject *py_rbBeginGpio(PyObject *self, PyObject *args) {
 
-    Py_ssize_t result;
+    int result;
     char * port;
     PyObject *gpioDict;
     int timeout;
 
-    if (!PyArg_ParseTuple(args, "sOi", &port, &gpioDict, &timeout)) {
+    if (!_PyArg_ParseTuple_SizeT(args, "sOi", &port, &gpioDict, &timeout)) {
 
         return NULL;
 
@@ -63,7 +65,7 @@ static PyObject *py_rbBeginGpio(PyObject *self, PyObject *args) {
     PyObject *tuple;
 
     tuple = PyDict_GetItemString(gpioDict, "powerEnable");
-    if (!PyArg_ParseTuple(tuple, "si", &chip, &pin)){
+    if (!_PyArg_ParseTuple_SizeT(tuple, "si", &chip, &pin)){
 
         return NULL;
 
@@ -72,7 +74,7 @@ static PyObject *py_rbBeginGpio(PyObject *self, PyObject *args) {
     gpioInfo.powerEnable.pin = (uint8_t)pin;
 
     tuple = PyDict_GetItemString(gpioDict, "iridiumEnable");
-    if (!PyArg_ParseTuple(tuple, "si", &chip, &pin)){
+    if (!_PyArg_ParseTuple_SizeT(tuple, "si", &chip, &pin)){
 
         return NULL;
 
@@ -81,7 +83,7 @@ static PyObject *py_rbBeginGpio(PyObject *self, PyObject *args) {
     gpioInfo.iridiumEnable.pin = (uint8_t)pin;
 
     tuple = PyDict_GetItemString(gpioDict, "booted");
-    if (!PyArg_ParseTuple(tuple, "si", &chip, &pin)) {
+    if (!_PyArg_ParseTuple_SizeT(tuple, "si", &chip, &pin)) {
 
         return NULL;
 
@@ -98,10 +100,10 @@ static PyObject *py_rbBeginGpio(PyObject *self, PyObject *args) {
 static PyObject *py_rbEndGpio(PyObject *self, PyObject *args) {
 
 
-    Py_ssize_t result;
+    int result;
     PyObject *gpioDict;
 
-    if (!PyArg_ParseTuple(args, "O", &gpioDict)) {
+    if (!_PyArg_ParseTuple_SizeT(args, "O", &gpioDict)) {
 
         return NULL;
 
@@ -120,7 +122,7 @@ static PyObject *py_rbEndGpio(PyObject *self, PyObject *args) {
     PyObject *tuple;
 
     tuple = PyDict_GetItemString(gpioDict, "powerEnable");
-    if (!PyArg_ParseTuple(tuple, "si", &chip, &pin)){
+    if (!_PyArg_ParseTuple_SizeT(tuple, "si", &chip, &pin)){
 
         return NULL;
 
@@ -129,7 +131,7 @@ static PyObject *py_rbEndGpio(PyObject *self, PyObject *args) {
     gpioInfo.powerEnable.pin = (uint8_t)pin;
 
     tuple = PyDict_GetItemString(gpioDict, "iridiumEnable");
-    if (!PyArg_ParseTuple(tuple, "si", &chip, &pin)){
+    if (!_PyArg_ParseTuple_SizeT(tuple, "si", &chip, &pin)){
 
         return NULL;
 
@@ -138,7 +140,7 @@ static PyObject *py_rbEndGpio(PyObject *self, PyObject *args) {
     gpioInfo.iridiumEnable.pin = (uint8_t)pin;
 
     tuple = PyDict_GetItemString(gpioDict, "booted");
-    if (!PyArg_ParseTuple(tuple, "si", &chip, &pin)) {
+    if (!_PyArg_ParseTuple_SizeT(tuple, "si", &chip, &pin)) {
 
         return NULL;
 
@@ -154,12 +156,12 @@ static PyObject *py_rbEndGpio(PyObject *self, PyObject *args) {
 #endif
 static PyObject *py_sendMessage(PyObject *self, PyObject *args) {
 
-    Py_ssize_t result;
+    int result;
     char * data;
     Py_ssize_t length;
     int timeout;
 
-    if (!PyArg_ParseTuple(args, "s#i", &data, &length, &timeout)) {
+    if (!_PyArg_ParseTuple_SizeT(args, "s#i", &data, &length, &timeout)) {
 
         return NULL;
 
@@ -173,13 +175,12 @@ static PyObject *py_sendMessage(PyObject *self, PyObject *args) {
 
 static PyObject *py_sendMessageAny(PyObject *self, PyObject *args) {
 
-    Py_ssize_t result
-    int topic, timeout;
+    int result, topic;
     char * data;
     Py_ssize_t length;
-    
+    int timeout;
 
-    if (!PyArg_ParseTuple(args, "is#i", &topic, &data, &length, &timeout)) {
+    if (!_PyArg_ParseTuple_SizeT(args, "is#i", &topic, &data, &length, &timeout)) {
 
         return NULL;
 
@@ -213,7 +214,7 @@ static PyObject *py_receiveMessageWithTopic(PyObject *self, PyObject *args) {
 
     int topic;
 
-    if (!PyArg_ParseTuple(args, "i", &topic)) {
+    if (!_PyArg_ParseTuple_SizeT(args, "i", &topic)) {
 
         return NULL;
 
@@ -221,7 +222,7 @@ static PyObject *py_receiveMessageWithTopic(PyObject *self, PyObject *args) {
 
     char* mtBuffer;
 
-    const Py_ssize_t mtLength = receiveMessageWithTopic(&mtBuffer, topic);
+    const size_t mtLength = receiveMessageWithTopic(&mtBuffer, topic);
 
     if ((mtLength > 0) && (mtBuffer != NULL)) {
 
@@ -258,21 +259,21 @@ static PyObject *py_getImei(PyObject *self, PyObject *args) {
 
 static PyObject *py_getBoardTemp(PyObject *self, PyObject *args) {
 
-    Py_ssize_t result = getBoardTemp();
+    int result = getBoardTemp();
     return Py_BuildValue("i", result);
 
 }
 
 static PyObject *py_getCardPresent(PyObject *self, PyObject *args) {
 
-  Py_ssize_t result = getCardPresent();
+  int result = getCardPresent();
   return Py_BuildValue("i", result);
 
 }
 
 static PyObject *py_getSimConnected(PyObject *self, PyObject *args) {
 
-  Py_ssize_t result = getSimConnected();
+  int result = getSimConnected();
   return Py_BuildValue("i", result);
 
 }
