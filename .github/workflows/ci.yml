@@ -19,10 +19,3 @@ jobs:
   release:
     needs: build
     uses: './.github/workflows/release.yml'
-
-  publish:
-    needs: release
-    permissions:
-      id-token: write
-      contents: read
-    uses: './.github/workflows/publish.yml'
